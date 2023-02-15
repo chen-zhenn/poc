@@ -91,10 +91,8 @@ const findBookByTitle = (function(){
 
 const bookTitleA = "Clean Code"
 const bookTitleB = "Grokking Algorithms"
-const bookTitleC = "Shell Script Profissional"
 const bookPositionA = findBookByTitle(bookTitleA, books)
 const bookPositionB = findBookByTitle(bookTitleB, books)
-const bookPositionC = findBookByTitle(bookTitleC, books)
 ```
 Com poucas mudança na lógica temos um código totalmente otimizado que atende requisitos e cumpre sua função.   
 E se olharmos com atenção, temos algumas técnicas de e abordagens interessantes neste trecho. Sendo elas:
