@@ -108,4 +108,4 @@ E se olharmos com atenção, temos algumas técnicas de e abordagens interessant
 É interessante vermos que com um exemplo simples podemos extrair e estudar vários conceitos que podem ser muito uteis em nosso dia-a-dia.   
 Bom, pelo menos pra mim é legal fazer essas POCs para ter um maior imersão na linguagem do coração - JavaScript.   
 
-## That's all folks!
+### That's all folks!
