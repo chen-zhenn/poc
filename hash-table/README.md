@@ -8,7 +8,10 @@
 * __Busca binária O(log n)__
 * __Hash table O(1)__
 * __Estrutura Map__
+* __Programação Funcional__
+* __Currying__
 * __Memoization__
+* __SRP - Clean Code__
 
 ## Introdução
 
@@ -45,9 +48,15 @@ Dado o cenário, temos como opção usar um algoritmo de **busca linear** `O(n)`
 Então para fins didáticos podemos ter um código parecido com isso :
 
 ```
-const findBookByTitle = (title,list) => list.find(item => title === item.title) // Função especialista
-const foundBook = findBookByTitle("Clean Code", books)
-const bookPosition = foundBook ? foundBook.position : 'Não existe livro em catálogo!'
+const bookSearchByTitle = (bookList,bookTitle) => 
+  bookList.find((item) => bookTitle === item.title)
+
+const searchResult = (result) => 
+    result ? result : 'Não encontrado!' 
+
+const cleanCodeBook = searchResult(bookSearchByTitle(bookList,"Clean Code")) 
+const linuxBibleBook = searchResult(bookSearchByTitle(bookList,"Linux Bible")) 
+const otherBook = searchResult(bookSearchByTitle(bookList,"Grokking Algorithms"))
 ```
 
 ## Porém, todavia, contudo entretanto...
@@ -76,29 +85,44 @@ E o bacana disso é que podemos fazer uso da técnica **memoization** para otimi
 Vejamos então como fica:
 
 ```
-const findBookByTitle = (function(){
-    const booksMap = new Map() 
+import { books as bookList } from "./data.js"
 
-    return (title,list) => {
-        const foundBook = list.find(item => title === item.title)
-        const hasBookMap = booksMap.has(title)
-        if(hasBookMap) return booksMap.get(title)
-        if(!foundBook) return 'Não existe livro em catálogo!'
-        booksMap.set(foundBook.title, foundBook.position)
-        return booksMap.get(title)
-    }     
+const Book = (function(){
+
+    function search(bookList){
+        const booksMap = new Map()
+
+        return (bookTitle) => {
+            const hasBookMap = booksMap.has(bookTitle)
+            let foundBook = false
+
+            if(hasBookMap) return booksMap.get(bookTitle)
+            foundBook = bookList.find((item) => bookTitle === item.title)
+            if(!foundBook) return 'Não existe livro em catálogo!'
+            booksMap.set(foundBook.title, foundBook)
+            return foundBook 
+        
+        }
+    }
+
+    return { search }
 })()
 
-const bookTitleA = "Clean Code"
-const bookTitleB = "Grokking Algorithms"
-const bookPositionA = findBookByTitle(bookTitleA, books)
-const bookPositionB = findBookByTitle(bookTitleB, books)
+const bookSearch = Book.search
+const bookSearchByTitle = bookSearch(bookList)
+const cleanCodeBook = bookSearchByTitle("Clean Code")
+const linuxBibleBook = bookSearchByTitle("Linux Bible")
+const otherBook = bookSearchByTitle("14 Hábitos de Desenvolvedores altamente Produtivos")
+
+const cleanCodeBookCached = bookSearchByTitle("Clean Code")
 ```
 Com poucas mudança na lógica temos um código totalmente otimizado que atende requisitos e cumpre sua função.   
 E se olharmos com atenção, temos algumas técnicas de e abordagens interessantes neste trecho. Sendo elas:
 
 * IIFE (Immediately Invoked Function Expression)
+* Factory
 * Closure
+* Currying
 * Memoization
 * Return only
 * SRP
